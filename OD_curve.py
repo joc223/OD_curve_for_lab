@@ -165,4 +165,4 @@ if st.session_state['num_steps'] > 0:
 st.divider()
 if st.button("重設 (清除所有輸入值)"):
     st.session_state['num_steps'] = 0
-    st.experimental_rerun() # 重新整理頁面
+    st.rerun() # 重新整理頁面
