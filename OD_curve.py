@@ -4,9 +4,9 @@ import numpy as np
 import re
 
 # --- 1. 設定網頁標題和說明 ---
-st.set_page_config(layout="wide") # 讓網頁寬一點
+# st.set_page_config(layout="wide") # 讓網頁寬一點
 st.title("特性曲線 (Characteristic Curve) 產生器")
-st.info("請在下面的文字框中輸入您的 OD 值 (從第1階到第21階)，並用逗號、空格或換行符號分隔。")
+st.info("請在下面的文字框中輸入您的 OD 值 (從第1階到第21階)，並用逗號、空格或換行符號作為分隔。")
 
 # --- 2. 準備預設的輸入數據 (來自您照片中的範例) ---
 default_data_str = """
@@ -23,7 +23,7 @@ data_input = st.text_area("請在此輸入 OD 數據 (共 21 個值)：",
                           height=200)
 
 # --- 4. 建立繪圖按鈕 ---
-if st.button("產生 H&D 曲線圖"):
+if st.button("產生 Characteristic Curve"):
     
     # --- 5. 處理並清理輸入的文字 ---
     try:
@@ -46,14 +46,14 @@ if st.button("產生 H&D 曲線圖"):
             # --- 7. 開始繪圖 (使用 Matplotlib) ---
             fig, ax = plt.subplots(figsize=(8, 5))
 
-            # 處理中文顯示 (使用 Noto Sans CJK TC，因為我們用 packages.txt 安裝了它)
+            # 處理中文顯示
             plt.rcParams['font.sans-serif'] = ['WenQuanYi Zen Hei', 'sans-serif']
             plt.rcParams['axes.unicode_minus'] = False 
 
             ax.plot(x_steps, od_for_plot, marker='o', linestyle='-', linewidth=2, color='black')
-            ax.set_title("實驗數據：特性曲線 (H&D Curve)", fontsize=16)
-            ax.set_xlabel("相對曝光階 (從 第21階 到 第1階)", fontsize=12)
-            ax.set_ylabel("光密度 (OD)", fontsize=12)
+            ax.set_title("實驗數據：特性曲線(Characteristic Curve)", fontsize=16)
+            ax.set_xlabel("相對曝光階(從第21階到第1階)", fontsize=12)
+            ax.set_ylabel("光密度(OD值)", fontsize=12)
 
             # 設定 Y 軸刻度
             y_ticks = [0.3, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5]
