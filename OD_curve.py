@@ -98,7 +98,19 @@ if 'num_steps' not in st.session_state:
     st.session_state['num_steps'] = 0
 
 # 建立一個輸入框和按鈕
-num_input = st.number_input("1. 您總共有多少個曝光階？", min_value=1, max_value=200, value=21, step=1)
+# --- 新增這一行 (使用 st.header) ---
+st.header("1. 您總共有多少個曝光階？") 
+
+# --- 修改原來的 st.number_input ---
+num_input = st.number_input(
+    " ",  # 標籤 (Label) 留空，因為標題在上面了
+    min_value=1, 
+    max_value=200, 
+    value=21, 
+    step=1, 
+    label_visibility="hidden" # 這是最重要的一步：隱藏那個空白標籤
+)
+
 if st.button("產生輸入格"):
     st.session_state['num_steps'] = num_input
     # 清空可能存在的舊數據
