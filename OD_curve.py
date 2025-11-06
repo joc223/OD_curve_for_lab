@@ -5,7 +5,8 @@ import re
 
 # --- 1. 設定網頁標題和說明 ---
 # st.set_page_config(layout="wide") # 讓網頁寬一點
-st.title("特性曲線 (Characteristic Curve) 產生器")
+st.title("特性曲線的繪圖產生器")
+st.title("Characteristic Curve")
 st.info("請在下面的文字框中輸入您的 OD 值 (從第1階到第21階)，並用逗號、空格或換行符號作為分隔。")
 
 # --- 2. 準備預設的輸入數據 (來自您照片中的範例) ---
@@ -51,9 +52,9 @@ if st.button("產生 Characteristic Curve"):
             plt.rcParams['axes.unicode_minus'] = False 
 
             ax.plot(x_steps, od_for_plot, marker='o', linestyle='-', linewidth=2, color='black')
-            ax.set_title("實驗數據：特性曲線(Characteristic Curve)", fontsize=16)
-            ax.set_xlabel("相對曝光階(從第21階到第1階)", fontsize=12)
-            ax.set_ylabel("光密度(OD值)", fontsize=12)
+            ax.set_title("實驗數據：特性曲線(Characteristic Curve)", fontsize=18)
+            ax.set_xlabel("曝光階(從第21階到第1階)", fontsize=14)
+            ax.set_ylabel("光密度(OD值)", fontsize=14)
 
             # 設定 Y 軸刻度
             y_ticks = [0.3, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5]
