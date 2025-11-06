@@ -5,8 +5,7 @@ import re
 
 # --- 1. 設定網頁標題和說明 ---
 # st.set_page_config(layout="wide") # 讓網頁寬一點
-st.title("特性曲線的繪圖產生器")
-st.title("Characteristic Curve")
+st.title("特性曲線的繪圖產生器(Characteristic Curve Plotter)")
 st.info("請在下面的文字框中輸入您的 OD 值 (從第1階到第21階)，並用逗號、空格或換行符號作為分隔。")
 
 # --- 2. 準備預設的輸入數據 (來自您照片中的範例) ---
