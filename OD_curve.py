@@ -44,7 +44,7 @@ if st.button("產生 H&D 曲線圖"):
             x_steps = list(range(1, len(od_for_plot) + 1)) # [1, 2, ..., 21]
 
             # --- 7. 開始繪圖 (使用 Matplotlib) ---
-            fig, ax = plt.subplots(figsize=(10, 7))
+            fig, ax = plt.subplots(figsize=(8, 5))
 
             # 處理中文顯示
             plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'PingFang TC', 'Arial Unicode MS', 'sans-serif']
