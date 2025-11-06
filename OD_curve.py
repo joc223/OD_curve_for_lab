@@ -46,8 +46,8 @@ if st.button("產生 H&D 曲線圖"):
             # --- 7. 開始繪圖 (使用 Matplotlib) ---
             fig, ax = plt.subplots(figsize=(8, 5))
 
-            # 處理中文顯示
-            plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'PingFang TC', 'Arial Unicode MS', 'sans-serif']
+            # 處理中文顯示 (使用 Noto Sans CJK TC，因為我們用 packages.txt 安裝了它)
+            plt.rcParams['font.sans-serif'] = ['Noto Sans CJK TC', 'sans-serif']
             plt.rcParams['axes.unicode_minus'] = False 
 
             ax.plot(x_steps, od_for_plot, marker='o', linestyle='-', linewidth=2, color='black')
