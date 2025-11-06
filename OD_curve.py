@@ -52,7 +52,7 @@ if st.button("產生 H&D 曲線圖"):
 
             ax.plot(x_steps, od_for_plot, marker='o', linestyle='-', linewidth=2, color='black')
             ax.set_title("實驗數據：特性曲線 (H&D Curve)", fontsize=16)
-            ax.set_xlabel("相對曝光階 (從 第21階 到 第1C階)", fontsize=12)
+            ax.set_xlabel("相對曝光階 (從 第21階 到 第1階)", fontsize=12)
             ax.set_ylabel("光密度 (OD)", fontsize=12)
 
             # 設定 Y 軸刻度
