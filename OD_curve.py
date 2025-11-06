@@ -72,5 +72,3 @@ if st.button("產生 H&D 曲線圖"):
 
     except Exception as e:
         st.error(f"發生錯誤： {e}")
-
-        
