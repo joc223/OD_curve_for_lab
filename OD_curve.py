@@ -44,7 +44,8 @@ def plot_hd_curve(od_values):
         ax.set_yticks(y_ticks)
         ax.set_ylim(bottom=min(0.2, min(od_for_plot) - 0.2), top=max(3.6, max(od_for_plot) + 0.2))
 
-        # 設定 X 軸刻度 (讓它自動調整)
+        x_ticks = []
+        
         # 設定 X 軸刻度 (讓它自動調整)
         # 我們試著每 2 階或 5 階顯示一個標籤，取決於總階數
         if num_steps <= 30:
@@ -96,7 +97,7 @@ if st.button("產生輸入格"):
 
 if st.session_state['num_steps'] > 0:
     
-    st.header(f"2. 請輸入 {st.session_state['num_steps']} 個 OD 數據 (從 第1階 開始)")
+    st.header(f"2. 請輸入 {st.session_state['num_steps']} 個 OD 數據")
     
     # 建立一個 Form (表單)，這樣使用者輸入完20個值後，可以「一次提交」
     with st.form("od_form"):
