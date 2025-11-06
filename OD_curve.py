@@ -9,8 +9,7 @@ st.title("特性曲線的繪圖產生器(Characteristic Curve Plotter)")
 st.info("請在下面的文字框中輸入您的 OD 值 (從第1階到第21階)，並用逗號、空格或換行符號作為分隔。")
 
 # --- 2. 準備預設的輸入數據 (來自您照片中的範例) ---
-default_data_str = """
-3.08, 3.08, 3.08, 3.08, 3.07,
+default_data_str = """3.08, 3.08, 3.08, 3.08, 3.07,
 3.05, 2.99, 2.89, 2.84, 2.74,
 2.58, 2.44, 2.28, 2.04, 1.77,
 1.56, 1.34, 1.14, 0.95, 0.86,
@@ -51,9 +50,9 @@ if st.button("產生 Characteristic Curve"):
             plt.rcParams['axes.unicode_minus'] = False 
 
             ax.plot(x_steps, od_for_plot, marker='o', linestyle='-', linewidth=2, color='black')
-            ax.set_title("實驗數據：特性曲線(Characteristic Curve)", fontsize=18)
-            ax.set_xlabel("曝光階(從第21階到第1階)", fontsize=14)
-            ax.set_ylabel("光密度(OD值)", fontsize=14)
+            ax.set_title("實驗數據：特性曲線 (Characteristic Curve)", fontsize=18)
+            ax.set_xlabel("曝光階 (從第21階到第1階)", fontsize=14)
+            ax.set_ylabel("光密度 (OD值)", fontsize=14)
 
             # 設定 Y 軸刻度
             y_ticks = [0.3, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5]
