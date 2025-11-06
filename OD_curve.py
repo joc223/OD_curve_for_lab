@@ -65,8 +65,6 @@ def plot_hd_curve(od_values):
 
         # 在 Streamlit 中顯示圖表
         st.pyplot(fig)
-        
-        st.success("曲線產生完畢！")
 
     except Exception as e:
         st.error(f"繪圖時發生錯誤：{e}")
@@ -130,7 +128,7 @@ if st.session_state['num_steps'] > 0:
                     step_counter += 1
 
         # 在 Form (表單) 的最後加上一個提交按鈕
-        submitted = st.form_submit_button("產生 H&D 曲線圖")
+        submitted = st.form_submit_button("產生曲線圖")
 
     # --- C. 當使用者按下「產生圖表」按鈕後 ---
     
@@ -165,6 +163,6 @@ if st.session_state['num_steps'] > 0:
 
 # --- D. (可選) 增加一個重設按鈕 ---
 st.divider()
-if st.button("重設 App (清除所有輸入)"):
+if st.button("重設 (清除所有輸入值)"):
     st.session_state['num_steps'] = 0
     st.experimental_rerun() # 重新整理頁面
