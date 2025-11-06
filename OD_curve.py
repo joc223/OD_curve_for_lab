@@ -45,6 +45,7 @@ def plot_hd_curve(od_values):
         ax.set_ylim(bottom=min(0.2, min(od_for_plot) - 0.2), top=max(3.6, max(od_for_plot) + 0.2))
 
         # 設定 X 軸刻度 (讓它自動調整)
+        # 設定 X 軸刻度 (讓它自動調整)
         # 我們試著每 2 階或 5 階顯示一個標籤，取決於總階數
         if num_steps <= 30:
             step_interval = 2
@@ -52,11 +53,11 @@ def plot_hd_curve(od_values):
             step_interval = 5
         else:
             step_interval = 10
-            
-        x_ticks = list(range(1, num_steps + 1, step_interval))
+
+            x_ticks = list(range(1, num_steps + 1, step_interval))
         if num_steps not in x_ticks:
             x_ticks.append(num_steps) # 確保最後一階一定會顯示
-            
+
         ax.set_xticks(x_ticks)
         ax.set_xlim(left=0.5, right=num_steps + 0.5)
 
