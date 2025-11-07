@@ -7,11 +7,14 @@ import re
 # 1. 繪圖的核心函式
 # -----------------------------------------------------
 def plot_hd_curve(od_values):
+    """
+    接收 OD 列表，繪製 H&D 曲線圖，並返回圖表物件
+    """
     try:
         od_for_plot = od_values[::-1]
         
         num_steps = len(od_for_plot)
-        x_steps = list(range(1, num_steps + 1)) # [1, 2, 3, ..., N]
+        x_steps = list(range(1, num_steps + 1)) 
 
         fig, ax = plt.subplots(figsize=(10, 7))
 
@@ -57,8 +60,7 @@ def plot_hd_curve(od_values):
         ax.set_xlim(left=0.5, right=num_steps + 0.5)
         ax.grid(True, which='both', linestyle='--', linewidth=0.5)
 
-        # 這裡只負責「畫圖」，不「顯示」
-        return fig
+        return fig # 返回圖表物件
 
     except Exception as e:
         st.error(f"繪圖時發生錯誤：{e}")
@@ -66,31 +68,11 @@ def plot_hd_curve(od_values):
         return None
 
 # -----------------------------------------------------
-# 【新功能 2：灰階層次條的 HTML/CSS 語法】
-# -----------------------------------------------------
-GRADIENT_BAR_HTML = """
-<div style="height: 500px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 10px 0;">
-    <span style="font-size: 14px; font-weight: bold; writing-mode: vertical-rl; transform: rotate(180deg);">Shoulder (高曝光 = 黑)</span>
-    
-    <div style="width: 45px; height: 100%; border: 1px solid #999; 
-                background: linear-gradient(to top, 
-                                            #FFFFFF 0%,  /* 全白 (Toe) */
-                                            #E0E0E0 20%, 
-                                            #A0A0A0 40%, 
-                                            #606060 60%, 
-                                            #303030 80%, 
-                                            #000000 100%); /* 全黑 (Shoulder) */
-                ">
-    </div>
-    
-    <span style="font-size: 14px; font-weight: bold; writing-mode: vertical-rl; transform: rotate(180deg);">Toe (低曝光 = 白)</span>
-</div>
-"""
-
-# -----------------------------------------------------
 # 2. Streamlit App 主程式
 # -----------------------------------------------------
-st.set_page_config(layout="wide") # 啟用寬螢幕模式
+# (不再需要 wide mode)
+# st.set_page_config(layout="wide") 
+
 st.title("特性曲線的繪圖產生器(Characteristic Curve Plotter)")
 st.info("您可以自訂曝光階數，並輸入對應的 OD 數據來產生曲線。")
 
@@ -108,10 +90,9 @@ with st.expander("點我查看「使用說明」", expanded=True): # 預設為�
     
     **圖表解讀：**
     * **特性曲線**：系統會自動將您的數據反轉（從最低曝光到最高曝光）來繪製 S 形曲線。
-    * **灰階條**：圖表右側的「灰階條」顯示了 OD 值與實際黑白程度的對應關係 (Toe = 低 OD = 白色；Shoulder = 高 OD = 黑色)。
     """)
 
-# (以下是您原有的程式碼)
+# --- A. 詢問曝光階 ---
 if 'num_steps' not in st.session_state:
     st.session_state['num_steps'] = 0
 
@@ -158,43 +139,32 @@ if st.session_state['num_steps'] > 0:
         submitted = st.form_submit_button("產生曲線圖")
     
     # --- C. 當使用者按下「產生圖表」按鈕後 ---
-    # 【重要修正】 `if submitted:` 必須在 `if st.session_state['num_steps'] > 0:` 的 *內部*
     if submitted:
+        
+        # 【重要】這裡不再需要 st.columns，直接繪圖
+        try:
+            if any(val.strip() == "" for val in input_values):
+                st.warning("您有部分數據尚未填寫，請填寫完畢後再試一次。")
+            else:
+                od_values_final = []
+                for val in input_values:
+                    match = re.search(r"[-+]?\d*\.\d+|\d+", val) 
+                    if match:
+                        od_values_final.append(float(match.group(0)))
+                    else:
+                        od_values_final.append(0.0)
+                        st.warning(f"無法解析輸入值 '{val}'，已當作 0.0 處理。")
 
-        # -----------------------------------------------------
-        # 【新功能 2：建立左右欄位 (圖表 + 灰階條)】
-        # -----------------------------------------------------
-        col_chart, col_bar = st.columns([4, 1]) # 4:1 的寬度比例
+                # 呼叫我們在上面定義的繪圖函式
+                fig = plot_hd_curve(od_values_final) # 獲取圖表物件
+                if fig:
+                    st.pyplot(fig) # 在 Streamlit 中顯示圖表
 
-        with col_chart:
-            # (這是在「左邊」欄位)
-            try:
-                if any(val.strip() == "" for val in input_values):
-                    st.warning("您有部分數據尚未填寫，請填寫完畢後再試一次。")
-                else:
-                    od_values_final = []
-                    for val in input_values:
-                        match = re.search(r"[-+]?\d*\.\d+|\d+", val) 
-                        if match:
-                            od_values_final.append(float(match.group(0)))
-                        else:
-                            od_values_final.append(0.0)
-                            st.warning(f"無法解析輸入值 '{val}'，已當作 0.0 處理。")
-
-                    # 呼叫我們在上面定義的繪圖函式
-                    fig = plot_hd_curve(od_values_final) # 獲取圖表物件
-                    if fig:
-                        st.pyplot(fig) # 在 Streamlit 中顯示圖表
-
-            except Exception as e:
-                st.error(f"處理數據時發生錯誤：{e}")
-                st.error("請檢查您的輸入是否都為數字。")
-
-        with col_bar:
-            # (這是在「右邊」欄位)
-            # --- 在右邊欄位顯示灰階條 ---
-            # 【重要修正】 `unsafe_allow_html` (全部小寫)
-            st.markdown(GRADIENT_BAR_HTML, unsafe_allow_html=True)
+        except Exception as e:
+            st.error(f"處理數據時發生錯誤：{e}")
+            st.error("請檢查您的輸入是否都為數字。")
+            
+        # (灰階條的 'with col_bar:' 區塊已整個移除)
 
 # (您原有的重設按鈕)
 st.divider()
