@@ -106,7 +106,7 @@ if st.button("產生輸入格"):
     st.session_state['num_steps'] = num_input
     st.session_state['od_values'] = ["0.0"] * num_input
 
-# B. 只有當 'num_steps' > 0 時，才顯示 OD 輸入區
+# B. 只有當 'num_steps' > 0 時，才會顯示 OD 輸入區
 if st.session_state['num_steps'] > 0:
     
     st.header(f"2. 請輸入 {st.session_state['num_steps']} 個 OD 數據")
