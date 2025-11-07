@@ -95,13 +95,12 @@ GRADIENT_BAR_HTML = """
 # -----------------------------------------------------
 # 2. Streamlit App 主程式
 # -----------------------------------------------------
-# st.set_page_config(layout="wide") # 【修正】 啟用寬螢幕模式以容納灰階條
+st.set_page_config(layout="wide") # 啟用寬螢幕模式
 st.title("特性曲線的繪圖產生器(Characteristic Curve Plotter)")
 st.info("您可以自訂曝光階數，並輸入對應的 OD 數據來產生曲線。")
 
 # -----------------------------------------------------
 # 【新功能 3：使用說明介面】
-# (將這段程式碼放在 st.info 下方)
 # -----------------------------------------------------
 with st.expander("點我查看「使用說明」", expanded=True): # 預設為展開
     st.markdown("""
@@ -109,7 +108,7 @@ with st.expander("點我查看「使用說明」", expanded=True): # 預設為�
     
     **使用步驟：**
     1.  **輸入曝光階數**：在「1. 您總共有多少個曝光階？」中輸入您的總階數（例如 21），然後按下「產生輸入格」。
-    2.  **輸入 OD 數據**：在「2. 請輸入 21 個 OD 數據」區塊中，依照您的實驗數據（從第1階到最後一階）依序填入所有的 OD 值。
+    2.  **輸入 OD 數據**：在「2. 請輸入 ... 數據」區塊中，依照您的實驗數據（從第1階到最後一階）依序填入所有的 OD 值。
     3.  **產生圖表**：按下「產生曲線圖」按鈕。
     
     **圖表解讀：**
@@ -136,6 +135,7 @@ if st.button("產生輸入格"):
     st.session_state['num_steps'] = num_input
     st.session_state['od_values'] = ["0.0"] * num_input
 
+# --- B. 只有當 'num_steps' > 0 時，才顯示 OD 輸入區 ---
 if st.session_state['num_steps'] > 0:
     
     st.header(f"2. 請輸入 {st.session_state['num_steps']} 個 OD 數據")
@@ -162,7 +162,8 @@ if st.session_state['num_steps'] > 0:
 
         submitted = st.form_submit_button("產生曲線圖")
     
-    # 【修正】 `if submitted:` 必須在 `if st.session_state['num_steps'] > 0:` 的 *內部*
+    # --- C. 當使用者按下「產生圖表」按鈕後 ---
+    # 【重要修正】 `if submitted:` 必須在 `if st.session_state['num_steps'] > 0:` 的 *內部*
     if submitted:
 
         # -----------------------------------------------------
@@ -193,8 +194,9 @@ if st.session_state['num_steps'] > 0:
                 st.error("請檢查您的輸入是否都為數字。")
 
         with col_bar:
-            # (這是在「右邊」欄V)
+            # (這是在「右邊」欄位)
             # --- 在右邊欄位顯示灰階條 ---
+            # 【重要修正】 `unsafe_allow_html` (全部小寫)
             st.markdown(GRADIENT_BAR_HTML, unsafe_allow_html=True)
 
 # (您原有的重設按鈕)
