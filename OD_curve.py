@@ -159,38 +159,39 @@ if st.session_state['num_steps'] > 0:
 
         submitted = st.form_submit_button("產生曲線圖")
     
-    if submitted:
-        
-        # -----------------------------------------------------
-        # 【新功能 2：建立左右欄位 (圖表 + 灰階條)】
-        # -----------------------------------------------------
-        col_chart, col_bar = st.columns([4, 1]) # 4:1 的寬度比例
+if submitted:
 
-        with col_chart:
-            # (以下是您原有的繪圖邏輯)
-            try:
-                if any(val.strip() == "" for val in input_values):
-                    st.warning("您有部分數據尚未填寫，請填寫完畢後再試一次。")
-                else:
-                    od_values_final = []
-                    for val in input_values:
-                        match = re.search(r"[-+]?\d*\.\d+|\d+", val) 
-                        if match:
-                            od_values_final.append(float(match.group(0)))
-                        else:
-                            od_values_final.append(0.0)
-                            st.warning(f"無法解析輸入值 '{val}'，已當作 0.0 處理。")
-                    
-                    # 呼叫我們在上面定義的繪圖函式
-                    plot_hd_curve(od_values_final)
+    # -----------------------------------------------------
+    # 【新功能 2：建立左右欄位 (圖表 + 灰階條)】
+    # -----------------------------------------------------
+    col_chart, col_bar = st.columns([4, 1]) # 4:1 的寬度比例
 
-            except Exception as e:
-                st.error(f"處理數據時發生錯誤：{e}")
-                st.error("請檢查您的輸入是否都為數字。")
-        
-        with col_bar:
-            # --- 在右邊欄位顯示灰階條 ---
-            st.markdown(GRADIENT_BAR_HTML, unsafe_allow_html=True)
+    with col_chart:
+        # (這是在「左邊」欄位)
+        try:
+            if any(val.strip() == "" for val in input_values):
+                st.warning("您有部分數據尚未填寫，請填寫完畢後再試一次。")
+            else:
+                od_values_final = []
+                for val in input_values:
+                    match = re.search(r"[-+]?\d*\.\d+|\d+", val) 
+                    if match:
+                        od_values_final.append(float(match.group(0)))
+                    else:
+                        od_values_final.append(0.0)
+                        st.warning(f"無法解析輸入值 '{val}'，已當作 0.0 處理。")
+
+                # 呼叫我們在上面定義的繪圖函式
+                plot_hd_curve(od_values_final)
+
+        except Exception as e:
+            st.error(f"處理數據時發生錯誤：{e}")
+            st.error("請檢查您的輸入是否都為數字。")
+
+    with col_bar:
+        # (這是在「右邊」欄位)
+        # --- 在右邊欄位顯示灰階條 ---
+        st.markdown(GRADIENT_BAR_HTML, unsafe_allow_html=True)
 
 # (您原有的重設按鈕)
 st.divider()
