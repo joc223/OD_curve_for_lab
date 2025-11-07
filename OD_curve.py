@@ -95,7 +95,7 @@ GRADIENT_BAR_HTML = """
 # -----------------------------------------------------
 # 2. Streamlit App 主程式
 # -----------------------------------------------------
-st.set_page_config(layout="wide") # 【修正】 啟用寬螢幕模式以容納灰階條
+# st.set_page_config(layout="wide") # 【修正】 啟用寬螢幕模式以容納灰階條
 st.title("特性曲線的繪圖產生器(Characteristic Curve Plotter)")
 st.info("您可以自訂曝光階數，並輸入對應的 OD 數據來產生曲線。")
 
@@ -195,7 +195,7 @@ if st.session_state['num_steps'] > 0:
         with col_bar:
             # (這是在「右邊」欄V)
             # --- 在右邊欄位顯示灰階條 ---
-            st.markdown(GRADIENT_BAR_HTML, unsafe_allow_HTML=True)
+            st.markdown(GRADIENT_BAR_HTML, unsafe_allow_html=True)
 
 # (您原有的重設按鈕)
 st.divider()
