@@ -4,7 +4,7 @@ import numpy as np
 import re
 
 # -----------------------------------------------------
-# 1. 繪圖的核心函式 (與您提供的一致)
+# 1. 繪圖的核心函式
 # -----------------------------------------------------
 def plot_hd_curve(od_values):
     try:
@@ -34,15 +34,10 @@ def plot_hd_curve(od_values):
         # 設定 Y 軸刻度
         y_ticks = [0.3, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5]
         ax.set_yticks(y_ticks)
-        # (您的 Y 軸範圍邏輯)
         ax.set_ylim(bottom=min(0.2, min(od_for_plot) - 0.2), top=max(3.6, max(od_for_plot) + 0.2))
 
-
         # 設定 X 軸刻度
-        # 初始化 x_ticks 變數
         x_ticks = [] 
-
-        # (您的 X 軸邏輯)
         if num_steps <= 25:
             x_ticks = list(range(1, num_steps + 1)) 
         elif num_steps <= 30:
@@ -62,17 +57,17 @@ def plot_hd_curve(od_values):
         ax.set_xlim(left=0.5, right=num_steps + 0.5)
         ax.grid(True, which='both', linestyle='--', linewidth=0.5)
 
-        st.pyplot(fig) # 在 Streamlit 中顯示圖表
+        # 這裡只負責「畫圖」，不「顯示」
+        return fig
 
     except Exception as e:
         st.error(f"繪圖時發生錯誤：{e}")
         st.error("請檢查您的 OD 數據是否均為有效的數字。")
+        return None
 
 # -----------------------------------------------------
 # 【新功能 2：灰階層次條的 HTML/CSS 語法】
-# (將這段 HTML 放在程式碼的頂部附近)
 # -----------------------------------------------------
-# 這是一段 HTML/CSS 程式碼，用來畫一個垂直的漸層條
 GRADIENT_BAR_HTML = """
 <div style="height: 500px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 10px 0;">
     <span style="font-size: 14px; font-weight: bold; writing-mode: vertical-rl; transform: rotate(180deg);">Shoulder (高曝光 = 黑)</span>
@@ -187,7 +182,9 @@ if st.session_state['num_steps'] > 0:
                             st.warning(f"無法解析輸入值 '{val}'，已當作 0.0 處理。")
 
                     # 呼叫我們在上面定義的繪圖函式
-                    plot_hd_curve(od_values_final)
+                    fig = plot_hd_curve(od_values_final) # 獲取圖表物件
+                    if fig:
+                        st.pyplot(fig) # 在 Streamlit 中顯示圖表
 
             except Exception as e:
                 st.error(f"處理數據時發生錯誤：{e}")
@@ -207,7 +204,6 @@ if st.button("重設 (清除所有輸入值)"):
 
 # -----------------------------------------------------
 # 【新功能 1：增加 Bug 聯絡資訊】
-# (您已經加好了，我保留您的版本)
 # -----------------------------------------------------
 st.divider()
 st.caption("© 2025 CSMU MIRS 1298002 wcy. 如果有發現未修復的 Bug 或建議，請聯絡 xes67421@gmail.com 謝謝。")
