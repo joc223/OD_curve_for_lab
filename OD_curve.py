@@ -37,6 +37,7 @@ def plot_hd_curve(od_values):
         # (您的 Y 軸範圍邏輯)
         ax.set_ylim(bottom=min(0.2, min(od_for_plot) - 0.2), top=max(3.6, max(od_for_plot) + 0.2))
 
+
         # 設定 X 軸刻度
         # 初始化 x_ticks 變數
         x_ticks = [] 
@@ -69,6 +70,7 @@ def plot_hd_curve(od_values):
 
 # -----------------------------------------------------
 # 【新功能 2：灰階層次條的 HTML/CSS 語法】
+# (將這段 HTML 放在程式碼的頂部附近)
 # -----------------------------------------------------
 # 這是一段 HTML/CSS 程式碼，用來畫一個垂直的漸層條
 GRADIENT_BAR_HTML = """
@@ -93,12 +95,13 @@ GRADIENT_BAR_HTML = """
 # -----------------------------------------------------
 # 2. Streamlit App 主程式
 # -----------------------------------------------------
-# st.set_page_config(layout="wide") # 【新功能】 啟用寬螢幕模式以容納灰階條
+st.set_page_config(layout="wide") # 【修正】 啟用寬螢幕模式以容納灰階條
 st.title("特性曲線的繪圖產生器(Characteristic Curve Plotter)")
 st.info("您可以自訂曝光階數，並輸入對應的 OD 數據來產生曲線。")
 
 # -----------------------------------------------------
 # 【新功能 3：使用說明介面】
+# (將這段程式碼放在 st.info 下方)
 # -----------------------------------------------------
 with st.expander("點我查看「使用說明」", expanded=True): # 預設為展開
     st.markdown("""
@@ -159,39 +162,40 @@ if st.session_state['num_steps'] > 0:
 
         submitted = st.form_submit_button("產生曲線圖")
     
-if submitted:
+    # 【修正】 `if submitted:` 必須在 `if st.session_state['num_steps'] > 0:` 的 *內部*
+    if submitted:
 
-    # -----------------------------------------------------
-    # 【新功能 2：建立左右欄位 (圖表 + 灰階條)】
-    # -----------------------------------------------------
-    col_chart, col_bar = st.columns([4, 1]) # 4:1 的寬度比例
+        # -----------------------------------------------------
+        # 【新功能 2：建立左右欄位 (圖表 + 灰階條)】
+        # -----------------------------------------------------
+        col_chart, col_bar = st.columns([4, 1]) # 4:1 的寬度比例
 
-    with col_chart:
-        # (這是在「左邊」欄位)
-        try:
-            if any(val.strip() == "" for val in input_values):
-                st.warning("您有部分數據尚未填寫，請填寫完畢後再試一次。")
-            else:
-                od_values_final = []
-                for val in input_values:
-                    match = re.search(r"[-+]?\d*\.\d+|\d+", val) 
-                    if match:
-                        od_values_final.append(float(match.group(0)))
-                    else:
-                        od_values_final.append(0.0)
-                        st.warning(f"無法解析輸入值 '{val}'，已當作 0.0 處理。")
+        with col_chart:
+            # (這是在「左邊」欄位)
+            try:
+                if any(val.strip() == "" for val in input_values):
+                    st.warning("您有部分數據尚未填寫，請填寫完畢後再試一次。")
+                else:
+                    od_values_final = []
+                    for val in input_values:
+                        match = re.search(r"[-+]?\d*\.\d+|\d+", val) 
+                        if match:
+                            od_values_final.append(float(match.group(0)))
+                        else:
+                            od_values_final.append(0.0)
+                            st.warning(f"無法解析輸入值 '{val}'，已當作 0.0 處理。")
 
-                # 呼叫我們在上面定義的繪圖函式
-                plot_hd_curve(od_values_final)
+                    # 呼叫我們在上面定義的繪圖函式
+                    plot_hd_curve(od_values_final)
 
-        except Exception as e:
-            st.error(f"處理數據時發生錯誤：{e}")
-            st.error("請檢查您的輸入是否都為數字。")
+            except Exception as e:
+                st.error(f"處理數據時發生錯誤：{e}")
+                st.error("請檢查您的輸入是否都為數字。")
 
-    with col_bar:
-        # (這是在「右邊」欄位)
-        # --- 在右邊欄位顯示灰階條 ---
-        st.markdown(GRADIENT_BAR_HTML, unsafe_allow_html=True)
+        with col_bar:
+            # (這是在「右邊」欄V)
+            # --- 在右邊欄位顯示灰階條 ---
+            st.markdown(GRADIENT_BAR_HTML, unsafe_allow_HTML=True)
 
 # (您原有的重設按鈕)
 st.divider()
@@ -201,6 +205,7 @@ if st.button("重設 (清除所有輸入值)"):
 
 # -----------------------------------------------------
 # 【新功能 1：增加 Bug 聯絡資訊】
+# (您已經加好了，我保留您的版本)
 # -----------------------------------------------------
 st.divider()
 st.caption("© 2025 CSMU MIRS 1298002 wcy. 如果有發現未修復的 Bug 或建議，請聯絡 xes67421@gmail.com 謝謝。")
